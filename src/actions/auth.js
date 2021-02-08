@@ -2,6 +2,7 @@ import { firebase, googleAuthProvider } from "../firebase/firebaseConfig"
 import { types } from "../types/types"
 import { finishLoading, startLoading } from "./ui"
 import Swal from 'sweetalert2'
+import { noteLogout } from "./notes"
 
 export const starLoginEmailPassword = (email, password)=>{
   return(dispatch)=>{//como es asincrona retornamos al dispath del resultado
@@ -51,6 +52,7 @@ export const startLogOut=()=>{
   return async (dispatch)=>{
     await firebase.auth().signOut();// retorna una promesa por eso debe ser asincrono
     dispatch(logout());
+    dispatch(noteLogout());
   }
 }
 

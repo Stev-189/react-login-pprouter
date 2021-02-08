@@ -8,6 +8,9 @@ import { firebase } from "../firebase/firebaseConfig"
 import { login } from '../actions/auth';
 import { PublicRoute } from './PublicRoute';
 import { PrivateRoute } from './PrivateRoute';
+// import { loadNotes } from '../helpers/loadNotes';
+// import { setNotes } from '../actions/notes';
+import { startLoadingNotes } from '../actions/notes';
 
 export const AppRouter = () => {
   const dispatch = useDispatch()
@@ -16,10 +19,13 @@ export const AppRouter = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
 
   useEffect(() => {
-    firebase.auth().onAuthStateChanged((user)=>{
+    firebase.auth().onAuthStateChanged(async (user)=>{
       if(user?.uid){// si user?.uid existe ejecuta
         dispatch(login(user.uid, user.displayName));
         setIsLoggedIn(true);
+        // const notes= await loadNotes(user.uid)// solicitamos la colleccion de notes
+        // dispatch(setNotes(notes));
+        dispatch(startLoadingNotes(user.uid));
       } else {
         setIsLoggedIn(false);
       }
